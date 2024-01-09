@@ -10,7 +10,7 @@ database = client.mydb
 collection = database.get_collection("phones")
 
 
-# helpers
+# Fonction d'aide 
 def phone_helper(phone) -> dict:
     return {
         "id": str(phone["_id"]),
@@ -20,7 +20,7 @@ def phone_helper(phone) -> dict:
         "status": str(phone["status"]),
     }
 
-# Retrieve all phones present in the database
+#  Récupération de tous les téléphones dans la base de données
 async def retrieve_phones():
     phones = []
     async for phone in collection.find():
@@ -28,23 +28,23 @@ async def retrieve_phones():
     return phones
 
 
-# Add a new phone into to the database
+# Ajout d'un nouveau téléphone dans la base de données
 async def add_phone(data: dict) -> dict:
     phone = await collection.insert_one(data)
     new_phone = await collection.find_one({"_id": phone.inserted_id})
     return phone_helper(new_phone)
 
 
-# Retrieve a phone with a matching ID
+# Récupération d'un téléphone avec un ID correspondant
 async def retrieve_phone(id: str) -> dict:
     phone = await collection.find_one({"_id": ObjectId(id)})
     if phone:
         return phone_helper(phone)
 
 
-# Update a phone with a matching ID
+# Mise à jour d'un téléphone avec un ID correspondant
 async def update_phone(id: str, data: dict):
-    # Return false if an empty request body is sent.
+    #  Retourne False si une requête vide est envoyée.
     if len(data) < 1:
         return False
     phone = await collection.find_one({"_id": ObjectId(id)})
@@ -57,7 +57,7 @@ async def update_phone(id: str, data: dict):
         return False
 
 
-# Delete a phone from the database
+# Suppression d'un téléphone de la base de données
 async def delete_phone(id: str):
     phone = await collection.find_one({"_id": ObjectId(id)})
     if phone:

@@ -13,7 +13,7 @@ app = FastAPI()
 # Configuration de la connexion à MongoDB
 client = AsyncIOMotorClient("mongodb://localhost:27017/")
 db = client["mydb"]
-collection = db["phones"]  # Modifier le nom de la collection
+collection = db["phones"]  
 
 # Configuration de Jinja2 pour les templates HTML
 templates = Jinja2Templates(directory="templates")

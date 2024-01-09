@@ -32,6 +32,6 @@ def scraping():
 
     df = pd.DataFrame(rows, columns=["title", "price", "seller", "rating"])
     df.to_csv(f"auchan_test4{page}.csv", index=False)
-    # df.to_excel(f"auchan_test{page}.xlsx", index=False)
+    
 
 scraping()
