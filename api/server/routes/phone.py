@@ -17,12 +17,14 @@ from server.models.phone import (
 
 router = APIRouter()
 
+# Ajout d'un téléphone dans la base de données
 @router.post("/", response_description="Phone data added into the database")
 async def add_phone_data(phone: PhoneModel = Body(...)):
     phone = jsonable_encoder(phone)
     new_phone = await add_phone(phone)
     return ResponseModel(new_phone, "Phone added successfully.")
 
+# Récupération de tous les téléphones depuis la base de données
 @router.get("/", response_description="Phones retrieved")
 async def get_phones_data():
     phones = await retrieve_phones()
@@ -30,6 +32,7 @@ async def get_phones_data():
         return ResponseModel(phones, "Phones data retrieved successfully")
     return ResponseModel(phones, "Empty list returned")
 
+# Récupération des données d'un téléphone spécifique
 @router.get("/{id}", response_description="Phone data retrieved")
 async def get_phone_data(id):
     phone = await retrieve_phone(id)
@@ -37,6 +40,7 @@ async def get_phone_data(id):
         return ResponseModel(phone, "Phone data retrieved successfully")
     return ErrorResponseModel("An error occurred.", 404, "Phone doesn't exist.")
 
+# Mise à jour des données d'un téléphone spécifique
 @router.put("/{id}")
 async def update_phone_data(id: str, req: UpdatePhoneModel = Body(...)):
     req = {k: v for k, v in req.dict().items() if v is not None}
@@ -52,6 +56,7 @@ async def update_phone_data(id: str, req: UpdatePhoneModel = Body(...)):
         "There was an error updating the phone data.",
     )
 
+# Suppression des données d'un téléphone spécifique
 @router.delete("/{id}", response_description="Phone data deleted from the database")
 async def delete_phone_data(id: str):
     deleted_phone = await delete_phone(id)
